@@ -1,40 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>JSSample</title>
+		<title>Stop Predictions</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="./wmata_api.js"></script>
 	</head>
-	<body>
+	<body onload="test()">
 			<h1>
-				Title!
+				Local Stop Predictions!
 			</h1>
-			<p id="stop1">
-			</p>
-			<p id="stop1time">
-			</p>
-		<script type="text/javascript">
-			$(function() {
-				var params = {
-					"api_key": "e13626d03d8e4c03ac07f95541b3091b",
-					// Request parameters
-					"StopID": "6000615",
-				};
-			  
-				$.ajax({
-					url: "https://api.wmata.com/NextBusService.svc/json/jPredictions?" + $.param(params),
-					type: "GET",
-				})
-				.done(function(data) {
-					console.log(data);
-					document.getElementById("stop1").innerHTML = data.Predictions[0].RouteID + " - " + data.Predictions[0].DirectionText;
-					document.getElementById("stop1time").innerHTML = data.Predictions[0].Minutes;
-					alert("success");
-				})
-				.fail(function() {
-					alert("error");
-				});
-			});
-		</script>
+			<h3>Last Refresh:</h3>
+			<p id="last_refresh"></p>
+			<h3>Stop Name:</h3>
+			<p id="stop_1"></p>
+			<h3>Minutes Away:</h3>
+			<p id="stop_1_time"></p>
 	</body>
 </html>
 
