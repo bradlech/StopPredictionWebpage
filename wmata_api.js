@@ -1,6 +1,6 @@
 function test() {	
 	var today = new Date();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	var time = today.toLocaleTimeString();
 	var params = {
 		"api_key": "e13626d03d8e4c03ac07f95541b3091b",
 		// Request parameters
