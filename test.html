@@ -1,20 +1,76 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Stop Predictions</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-		<script src="./wmata_api.js"></script>
-	</head>
-	<body onload="test()">
-			<h1>
-				Local Stop Predictions!
-			</h1>
-			<h3>Last Refresh:</h3>
-			<p id="last_refresh"></p>
-			<h3>Stop Name:</h3>
-			<p id="stop_1"></p>
-			<h3>Minutes Away:</h3>
-			<p id="stop_1_time"></p>
-	</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Stop Predictions</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="./wmata_api.js"></script>
+        <script src="./map_data.js"></script>
+        <script>
+            function googleMapsReady() {
+                const apiKey = "e13626d03d8e4c03ac07f95541b3091b";
+                const stopId = "6000615";
+                const nextBus = nextBusAtStop(apiKey, stopId);
+                const busLoc = nextBusCurrentLoc(apiKey, nextBus);
+                initMap(busLoc);
+            }
+
+            // Just re-run everything every 20 seconds
+            setInterval(googleMapsReady, 20000);
+        </script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous">
+        <!-- FontAwesome -->
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <span class="fas fa-bus"></span> Local Stop Predictions! <span class="fas fa-bus"></span>
+            </h1>
+            <p>
+                <span class="font-weight-bold">Last Refresh</span>:
+                <span id="last_refresh">Never</span>
+                (automatically refreshes approximately every 20 sec)
+            </p>
+            <div class="clearfix" id="info-wrapper">
+                <div class="float-left" id="stop-name">
+                    <h3>Stop Name</h3>
+                    <p>
+                        <span class="font-weight-bold" id="stop-1-route-id"></span> -
+                        <span id="stop-1-route-dir"></span>
+                    </p>
+                </div>
+                <div class="float-right" id="minutes-away">
+                    <h3>Minutes Away</h3>
+                    <p>
+                        Approx. <span id="stop-1-time"></span> minutes
+                    </p>
+                </div>
+            </div>
+
+            <div class="float-none" id="map-wrapper">
+                <h3>Map</h3>
+                <p class="text-muted">
+                    Note: Map data is updated by WMATA slightly less frequently
+                    than estimated arrival time
+                </p>
+                <!-- This will be used for the Google Map -->
+                <div id="map" style="height: 600px;"></div>
+            </div>
+        </div>
+        <!-- Google recommends putting this at the end of the page, just
+          -- before </body> (notice that callback is set to the JS function
+          -- above.
+          -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgdBZwURlVOUn3aBaAyYKICj3UeJufJgE&callback=googleMapsReady"
+                async
+                defer>
+        </script>
+    </body>
 </html>
 
