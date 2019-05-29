@@ -28,17 +28,21 @@ function initMap(busLoc) {
         anchor: new google.maps.Point(14, 32),
     }
 
-    // Create a marker for the bus, based on the location passed in
-    var busMarker = new google.maps.Marker({
-        position: busLoc,
-        map: map,
-        icon: busMarkerIcon,
-        title: "Bus",
-    });
-
-    // Get a list of all markers
-    var markers = [homeMarker, busMarker];
+	// Get a list of all markers
+    var markers = [homeMarker];
     var bounds = new google.maps.LatLngBounds();
+	
+    // Create a marker for the bus, based on the location passed in
+	if (busLoc != null) {
+		var busMarker = new google.maps.Marker({
+			position: busLoc,
+			map: map,
+			icon: busMarkerIcon,
+			title: "Bus",
+		});
+		
+		markers.push(busMarker);
+	}
 
     // Create a set of bounds that contains all markers and use it to set
     // the bounds for the map (ensuring that home and the bus are always both
