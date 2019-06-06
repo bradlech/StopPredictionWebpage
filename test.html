@@ -6,13 +6,35 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="./wmata_api.js"></script>
         <script src="./map_data.js"></script>
+        <script src="./update_page.js"></script>
         <script>
             function googleMapsReady() {
                 const apiKey = "e13626d03d8e4c03ac07f95541b3091b";
                 const stopId = "6000615";
-                const nextBus = nextBusAtStop(apiKey, stopId);
-                const busLoc = nextBusCurrentLoc(apiKey, nextBus);
-                initMap(busLoc);
+
+                $.when(nextBusesAtStop(apiKey, stopId))
+                 .then(function(nextBuses) {
+                    displayBusTimes(nextBuses);
+                    var busIds = nextBuses.Predictions.map(bus => bus.VehicleID);
+                    var busLocDeferreds = nextBuses.Predictions.map(bus => { return findBusLocation(apiKey, bus) });
+
+                    $.when(...busLocDeferreds)
+                     .then(function() {
+                        var buses = arguments[0];
+
+                        console.log(buses);
+                        var busLocations = buses.BusPositions
+                            .filter(bus => busIds.includes(bus.VehicleID))
+                            .map(bus => ({
+                                lat: bus.Lat,
+                                lng: bus.Lon,
+                                id: bus.VehicleID,
+                            })
+                        );
+
+                        updateMap(busLocations);
+                     });
+                 });
             }
 
             // Just re-run everything every 20 seconds
@@ -40,19 +62,13 @@
             <div class="clearfix" id="info-wrapper">
                 <div class="float-left" id="stop-name">
                     <h3>Stop Name</h3>
-                    <p id="stop-1">
-						<span class="font-weight-bold" id="stop-1-stop-name">
-							Washington Blvd + Ohio St
-						</span>: Route
-                        <span id="stop-1-route-id"></span> - Heading
-                        <span id="stop-1-route-dir"></span>
-                    </p>
+                    <div id="stop-route-data">
+                    </div>
                 </div>
                 <div class="float-right" id="minutes-away">
                     <h3>Minutes Away</h3>
-                    <p id="minues-away-1">
-                        Approx. <span id="stop-1-time"></span> minutes
-                    </p>
+                    <div id="stop-time">
+                    </div>
                 </div>
             </div>
 

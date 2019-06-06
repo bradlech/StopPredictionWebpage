@@ -1,9 +1,9 @@
 /**
  * Updates the Google Map
  *
- * @param {object} busLoc an object with the fields needed for a Marker
+ * @param {array} busLoc an object with the fields needed for a Marker
  */
-function initMap(busLoc) {
+function updateMap(busLocations) {
     // Hard-code the lat/lon for home
     const homeLatLng = {
         lat: 38.887536,
@@ -28,21 +28,21 @@ function initMap(busLoc) {
         anchor: new google.maps.Point(14, 32),
     }
 
-	// Get a list of all markers
+    // Get a list of all markers
     var markers = [homeMarker];
     var bounds = new google.maps.LatLngBounds();
-	
-    // Create a marker for the bus, based on the location passed in
-	if (busLoc != null) {
-		var busMarker = new google.maps.Marker({
-			position: busLoc,
-			map: map,
-			icon: busMarkerIcon,
-			title: "Bus",
-		});
-		
-		markers.push(busMarker);
-	}
+
+    // Create a marker for each bus, based on the location passed in
+    var busMarkers = busLocations.map(bus => {
+        return new google.maps.Marker({
+            position: bus,
+            map: map,
+            icon: busMarkerIcon,
+            title: bus.id,
+        });
+    });
+
+    markers = markers.concat(busMarkers);
 
     // Create a set of bounds that contains all markers and use it to set
     // the bounds for the map (ensuring that home and the bus are always both
