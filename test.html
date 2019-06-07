@@ -22,16 +22,19 @@
                      .then(function() {
                         var numBuses = arguments.length
                         var i;
+                        var busLocations = [];
                         for (i = 0; i < numBuses; i++) {
-                            var buses = arguments[i][0];
-                            var busLocations = buses.BusPositions
-                                .filter(bus => busIds.includes(bus.VehicleID))
-                                .map(bus => ({
-                                    lat: bus.Lat,
-                                    lng: bus.Lon,
-                                    id: bus.VehicleID,
-                                })
-                            );
+                            if (arguments[i] && 'BusPositions' in arguments[i][0]) {
+                                var buses = arguments[i][0];
+                                busLocations = busLocations.concat(buses.BusPositions
+                                    .filter(bus => busIds.includes(bus.VehicleID))
+                                    .map(bus => ({
+                                        lat: bus.Lat,
+                                        lng: bus.Lon,
+                                        id: bus.VehicleID,
+                                    })
+                                ));
+                            }
                         }
                        updateMap(busLocations);
                      });
