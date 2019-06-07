@@ -20,19 +20,20 @@
 
                     $.when(...busLocDeferreds)
                      .then(function() {
-                        var buses = arguments[0];
-
-                        console.log(buses);
-                        var busLocations = buses.BusPositions
-                            .filter(bus => busIds.includes(bus.VehicleID))
-                            .map(bus => ({
-                                lat: bus.Lat,
-                                lng: bus.Lon,
-                                id: bus.VehicleID,
-                            })
-                        );
-
-                        updateMap(busLocations);
+                        var numBuses = arguments.length
+                        var i;
+                        for (i = 0; i < numBuses; i++) {
+                            var buses = arguments[i][0];
+                            var busLocations = buses.BusPositions
+                                .filter(bus => busIds.includes(bus.VehicleID))
+                                .map(bus => ({
+                                    lat: bus.Lat,
+                                    lng: bus.Lon,
+                                    id: bus.VehicleID,
+                                })
+                            );
+                        }
+                       updateMap(busLocations);
                      });
                  });
             }
