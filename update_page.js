@@ -18,11 +18,14 @@ function displayBusTimes(nextBuses) {
             const route = bus.RouteID;
 
             $(routeDataId).append(
-                "<p><span class='font-weight-bold'>Bus " + id + "</span> will be at <span class='font-weight-bold'>" + stop + "</span> on route <span class='font-weight-bold'>" + route + "</span> heading <span class='font-weight-bold'>" + dir + "</span></p>" 
-            );
-            $(minutesId).append(
-                "<p>Approx. " + min + " away</p>"
-            );
+                //"<p><span class='font-weight-bold'>Bus " + id + "</span> will be at <span class='font-weight-bold'>" + stop + "</span> on route <span class='font-weight-bold'>" + route + "</span> heading <span class='font-weight-bold'>" + dir + "</span></p>" 
+				"<li class='list-group-item'><span class='font-weight-bold'>Bus " + id + 
+				"</span> will arrive in approximately <span class='font-weight-bold'>" + min + 
+				" minutes</span></li>"
+			);
+            //$(minutesId).append(
+            //    "<p>Approx. " + min + " away</p>"
+            //);
         });
     }
 }

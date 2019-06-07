@@ -20,12 +20,12 @@ function updateMap(busLocations) {
         title: "1900 North Ohio St",
     });
 
-    // Create an icon for the bus
+    // Create an icon for the bus using WMATA's icon
     var busMarkerIcon = {
-        url: "./bus.png",
-        size: new google.maps.Size(32, 32),
+        url: "https://buseta.wmata.com/img/realtime/bus/bus.png",
+        size: new google.maps.Size(25, 26),
         origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(14, 32),
+		anchor: new google.maps.Point(11, 11), // Icon offset
     }
 
     // Get a list of all markers
@@ -38,7 +38,7 @@ function updateMap(busLocations) {
             position: bus,
             map: map,
             icon: busMarkerIcon,
-            title: bus.id,
+            title: "Bus " + bus.id,
         });
     });
 
