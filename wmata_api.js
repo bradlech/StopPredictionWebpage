@@ -6,19 +6,17 @@
  * @return {object} The bus retrieved from the WMATA API
  */
 function nextBusesAtStop(apiKey, stopId) {
-    const today = new Date();
-    const time = today.toLocaleTimeString();
-    const predictionParams = {
+    const params = {
         "api_key": apiKey,
         "StopID": stopId,
     };
 
     var nextBuses = $.ajax({
-        url: "https://api.wmata.com/NextBusService.svc/json/jPredictions?" + $.param(predictionParams),
+        url: "https://api.wmata.com/NextBusService.svc/json/jPredictions?" + $.param(params),
         type: "GET",
     })
-    .fail(function() {
-        alert("Unable to query for next bus at stop");
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
     });
 
     return nextBuses;
@@ -32,19 +30,18 @@ function nextBusesAtStop(apiKey, stopId) {
  * @param {object} bus The object from the WMATA API for the next bus
  * @return {object} The lat and lng of the bus' location
  */
-function findBusLocation(apiKey, bus) {
+function findBusLocation(apiKey, routeId) {
     const params = {
         "api_key": apiKey,
-        "RouteID": bus.RouteID,
+        "RouteID": routeId
     };
-    var busLoc;
 
     var location = $.ajax({
         url: "https://api.wmata.com/Bus.svc/json/jBusPositions?" + $.param(params),
         type: "GET",
     })
-    .fail(function() {
-        alert("Unable to retrieve bus location");
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
     });
 
     return location;

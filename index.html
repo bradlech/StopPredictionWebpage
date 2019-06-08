@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Stop Predictions</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="./wmata_api.js"></script>
+        <script src="./map_data.js"></script>
+        <script src="./update_page.js"></script>
+        <script>
+            /**
+             * Used with Array.prototype.filter to ensure that this is a unique/
+             * distinct value in the array. This will always remove the second
+             * copy.
+             */
+            function distinct(value, index, self) {
+                return self.indexOf(value) == index;
+            }
+
+            function googleMapsReady() {
+                const apiKey = "e13626d03d8e4c03ac07f95541b3091b";
+                const stopId = "6000615";
+
+                $.when(nextBusesAtStop(apiKey, stopId))
+                    .then(function(nextBuses) {
+
+                        displayBusTimes(nextBuses);
+                        var timePredictions = nextBuses.Predictions
+
+                        // Gather bus vehicle and routeIds
+                        var busIds = timePredictions.map(bus => bus.VehicleID).filter(distinct);
+                        var routeIds = timePredictions.map(bus => bus.RouteID).filter(distinct);
+
+                        // Collect the locations of buses on each route
+                        var busLocDeferreds = routeIds.map(route => findBusLocation(apiKey, route));
+
+                        // Process all the locations, convert them to the correct
+                        // format for Google Maps
+                        $.when(...busLocDeferreds)
+                            .then(function(...data) {
+                                // Always deal with an array of arrays (because
+                                // sometimes we may have more than one Deferred to
+                                // deal with and this makes the assumptions easier)
+                                if (!(data[0] instanceof Array)) {
+                                    data = [data];
+                                }
+                                var busLocations = data.map(entry => entry[0])
+                                    .filter(entry => 'BusPositions' in entry)
+                                    .flatMap(entry => entry.BusPositions)
+                                    .filter(bus => busIds.includes(bus.VehicleID))
+                                    .map(bus => ({
+                                        lat: bus.Lat,
+                                        lng: bus.Lon,
+                                        id: bus.VehicleID
+                                    }));
+                                updateMap(busLocations);
+                            });
+                    });
+            }
+
+            // Just re-run everything every 20 seconds
+            setInterval(googleMapsReady, 20000);
+        </script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <!-- FontAwesome -->
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <span class="fas fa-bus"></span> Local Stop Predictions! <span class="fas fa-bus"></span>
+            </h1>
+            <p>
+                <span class="font-weight-bold">Last Refresh</span>:
+                <span id="last_refresh">Never</span>
+                (automatically refreshes approximately every 20 sec)
+            </p>
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Washington Blvd + Ohio St</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
+                    <ul class="list-group list-group-flush" id="stop-route-data">
+                    </ul>
+                </div>
+            </div>
+
+            <br>
+            <div class="float-none" id="map-wrapper">
+                <h3>Map</h3>
+                <p class="text-muted">
+                    Note: Map data is updated by WMATA slightly less frequently
+                    than estimated arrival time
+                </p>
+                <!-- This will be used for the Google Map -->
+                <div id="map" style="height: 600px;"></div>
+            </div>
+        </div>
+        <!-- Google recommends putting this at the end of the page, just
+            before </body> (notice that callback is set to the JS function
+            above.
+        -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgdBZwURlVOUn3aBaAyYKICj3UeJufJgE&callback=googleMapsReady"
+                async
+                defer>
+        </script>
+        </body>
+</html>
+
