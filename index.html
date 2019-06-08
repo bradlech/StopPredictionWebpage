@@ -80,21 +80,88 @@
                 <span id="last_refresh">Never</span>
                 (automatically refreshes approximately every 20 sec)
             </p>
-            <div class="card" style="width: 100%;">
-                <div class="card-body">
-                    <h5 class="card-title">Washington Blvd + Ohio St</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
-                    <ul class="list-group list-group-flush" id="stop-route-data">
-                    </ul>
-                </div>
-            </div>
+			
+			<div class="card-deck">
+				<div class="card" >
+					<div class="card-body">
+					<div class="float-right">
+						<img src="./Metro_Logo.png" alt="WMATA Logo" style="height: 3rem">
+					</div>
+						<h5 class="card-title">Washington Blvd + Ohio St</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
+						<ul class="list-group list-group-flush" id="stop-route-data-1">
+						<li class='list-group-item'>No data currently :(</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">
+							Bus Stop # 6000915 is a WMATA route.
+						</small>
+					</div>
+				</div>
+				<div class="card" >
+					<div class="card-body">
+					<div class="float-right">
+						<img src="./ART_Logo.png" alt="ART Logo" style="height: 3rem">
+					</div>
+						<h5 class="card-title">Washington Blvd + Ohio St</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Route 53W heading West to East Falls Church</h6>
+						<ul class="list-group list-group-flush" id="stop-route-data-2">
+						<li class='list-group-item'>No data currently :(</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">
+							Bus Stop # 15039 is a ART route.
+						</small>
+					</div>
+				</div>
+			</div>
 
+			<br>
+			<div class="card-deck">
+				<div class="card" >
+					<div class="card-body">
+					<div class="float-right">
+						<img src="./Metro_Logo.png" alt="WMATA Logo" style="height: 3rem">
+					</div>
+						<h5 class="card-title">Washington Blvd + Ohio St</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading East to Ballson</h6>
+						<ul class="list-group list-group-flush" id="stop-route-data-3">
+						<li class='list-group-item'>No data currently :(</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">
+							Bus Stop # 6000912 is a WMATA route.
+						</small>
+					</div>
+				</div>
+				<div class="card" >
+					<div class="card-body">
+					<div class="float-right">
+						<img src="./Metro_Logo.png" alt="WMATA Logo" style="height: 3rem">
+					</div>
+						<h5 class="card-title">East Fall Church + Bus Bay D</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
+						<ul class="list-group list-group-flush" id="stop-route-data-4">
+						<li class='list-group-item'>No data currently :(</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">
+							Bus Stop # 6000822 is a WMATA route.
+						</small>
+					</div>
+				</div>
+			</div>
+			
             <br>
             <div class="float-none" id="map-wrapper">
                 <h3>Map</h3>
                 <p class="text-muted">
                     Note: Map data is updated by WMATA slightly less frequently
-                    than estimated arrival time
+                    than estimated arrival time.
                 </p>
                 <!-- This will be used for the Google Map -->
                 <div id="map" style="height: 600px;"></div>
