@@ -16,16 +16,13 @@ function displayBusTimes(nextBuses) {
             const min = bus.Minutes;
             const id = bus.VehicleID;
             const route = bus.RouteID;
+            const mins = (min == 1) ? "minute" : "minutes";
 
             $(routeDataId).append(
-                //"<p><span class='font-weight-bold'>Bus " + id + "</span> will be at <span class='font-weight-bold'>" + stop + "</span> on route <span class='font-weight-bold'>" + route + "</span> heading <span class='font-weight-bold'>" + dir + "</span></p>" 
-				"<li class='list-group-item'><span class='font-weight-bold'>Bus " + id + 
-				"</span> will arrive in approximately <span class='font-weight-bold'>" + min + 
-				" minutes</span></li>"
-			);
-            //$(minutesId).append(
-            //    "<p>Approx. " + min + " away</p>"
-            //);
+                "<li class='list-group-item'><span class='font-weight-bold'>Bus " + id +
+                "</span> will arrive in approximately <span class='font-weight-bold'>" + min +
+                " " + mins + "</span></li>"
+            );
         });
     }
 }

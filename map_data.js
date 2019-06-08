@@ -25,7 +25,7 @@ function updateMap(busLocations) {
         url: "https://buseta.wmata.com/img/realtime/bus/bus.png",
         size: new google.maps.Size(25, 26),
         origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(11, 11), // Icon offset
+        anchor: new google.maps.Point(11, 11), // Icon offset
     }
 
     // Get a list of all markers
