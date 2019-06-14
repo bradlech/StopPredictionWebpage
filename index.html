@@ -20,10 +20,12 @@
             function googleMapsReady() {
                 const apiKey = "e13626d03d8e4c03ac07f95541b3091b";
                 const stopId = "6000615";
+				const stationCodes = "N03,N04";
 
                 $.when(nextBusesAtStop(apiKey, stopId))
                     .then(function(nextBuses) {
 
+						// Display the buses coming on the page
                         displayBusTimes(nextBuses);
                         var timePredictions = nextBuses.Predictions
 
@@ -53,9 +55,18 @@
                                         lng: bus.Lon,
                                         id: bus.VehicleID
                                     }));
-                                updateMap(busLocations);
+								// Temportarily disabled the actually mapping function
+                                //updateMap(busLocations);
                             });
                     });
+					
+				$.when(nextTrainsAtTrains(apiKey, stationCodes))
+                    .then(function(nextTrains) {
+						//console.log(nextTrains.Trains);
+						
+						// Display the trains coming on the page
+						displayTrainTimes(nextTrains);
+					});
             }
 
             // Just re-run everything every 20 seconds
@@ -89,7 +100,7 @@
 					</div>
 						<h5 class="card-title">Washington Blvd + Ohio St</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-1">
+						<ul class="list-group list-group-flush" id="stop-route-data-0">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
@@ -106,7 +117,7 @@
 					</div>
 						<h5 class="card-title">Washington Blvd + Ohio St</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading East to Ballson</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-3">
+						<ul class="list-group list-group-flush" id="stop-route-data-1">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
@@ -127,7 +138,7 @@
 					</div>
 						<h5 class="card-title">Ballston Station + Bus Bay D</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading West to Dunn Loring Station</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-3">
+						<ul class="list-group list-group-flush" id="stop-route-data-2">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
@@ -144,7 +155,7 @@
 					</div>
 						<h5 class="card-title">East Fall Church Station + Bus Bay D</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Route 2A heading East to Ballson</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-4">
+						<ul class="list-group list-group-flush" id="stop-route-data-3">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
@@ -165,7 +176,7 @@
 					</div>
 						<h5 class="card-title">Greensboro Station</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Next arriving trains</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-5">
+						<ul class="list-group list-group-flush" id="station-data-0">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
@@ -180,15 +191,15 @@
 					<div class="float-right">
 						<img src="./Metro_Logo.png" alt="WMATA Logo" style="height: 3rem">
 					</div>
-						<h5 class="card-title">Silver Spring Station</h5>
+						<h5 class="card-title">Spring Hill Station</h5>
 						<h6 class="card-subtitle mb-2 text-muted">Next arriving trains</h6>
-						<ul class="list-group list-group-flush" id="stop-route-data-6">
+						<ul class="list-group list-group-flush" id="station-data-1">
 						<li class='list-group-item'>No data currently :(</li>
 						</ul>
 					</div>
 					<div class="card-footer">
 						<small class="text-muted">
-							Silver Spring Station is operated by WMATA.
+							Spring Hill Station is operated by WMATA.
 						</small>
 					</div>
 				</div>

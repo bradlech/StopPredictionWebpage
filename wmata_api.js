@@ -12,7 +12,8 @@ function nextBusesAtStop(apiKey, stopId) {
     };
 
     var nextBuses = $.ajax({
-        url: "https://api.wmata.com/NextBusService.svc/json/jPredictions?" + $.param(params),
+        url: "https://api.wmata.com/NextBusService.svc/json/jPredictions?"
+			+ $.param(params),
         type: "GET",
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -37,7 +38,8 @@ function findBusLocation(apiKey, routeId) {
     };
 
     var location = $.ajax({
-        url: "https://api.wmata.com/Bus.svc/json/jBusPositions?" + $.param(params),
+        url: "https://api.wmata.com/Bus.svc/json/jBusPositions?"
+			+ $.param(params),
         type: "GET",
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -45,4 +47,28 @@ function findBusLocation(apiKey, routeId) {
     });
 
     return location;
+}
+
+/**
+ * Finds the next trains that will be at the given stations.
+ *
+ * @param {string} apiKey the API key needed for the WMATA API
+ * @param {string} stationCodes the stations to find the trains for
+ * @return {object} The trains retrieved from the WMATA API
+ */
+function nextTrainsAtTrains(apiKey, stationCodes) {
+    const params = {
+        "api_key": apiKey,
+    };
+
+    var nextTrains = $.ajax({
+        url: "https://api.wmata.com/StationPrediction.svc/json/GetPrediction/"
+			+ stationCodes + "?" + $.param(params),
+        type: "GET",
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
+    });
+
+    return nextTrains;
 }
